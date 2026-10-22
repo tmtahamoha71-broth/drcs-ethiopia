@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Rights and Community Safety Coalition (DRCS)</title>
+    <title>Digital Rights & Community Safety Coalition (DRCS / ድመማህ)</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-bg: rgba(30, 41, 59, 0.8);
             --accent-color: #38bdf8;
             --text-color: #f8fafc;
             --border-color: rgba(255, 255, 255, 0.1);
@@ -20,29 +20,48 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
-        .container {
-            max-width: 800px;
-            width: 100%;
-        }
+        .container { max-width: 800px; width: 100%; }
         header {
             text-align: center;
-            padding: 30px;
+            padding: 25px;
             background: var(--card-bg);
             backdrop-filter: blur(10px);
             border-radius: 16px;
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
         }
-        h1 { color: var(--accent-color); margin-bottom: 10px; }
+        h1 { color: var(--accent-color); margin-bottom: 5px; font-size: 24px; }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: #0f172a;
+        }
         .form-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
             padding: 25px;
             border-radius: 16px;
             border: 1px solid var(--border-color);
+            display: none;
         }
+        .form-card.active { display: block; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; }
         input, select, textarea {
@@ -54,7 +73,14 @@
             color: #fff;
             box-sizing: border-box;
         }
-        button {
+        .captcha-box {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px dashed var(--accent-color);
+        }
+        button[type="submit"] {
             width: 100%;
             padding: 14px;
             background-color: var(--accent-color);
@@ -64,15 +90,23 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 15px;
         }
-        button:hover { opacity: 0.9; }
-        #status-msg {
+        .status-msg {
             margin-top: 15px;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             display: none;
             text-align: center;
+            font-weight: bold;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -81,14 +115,20 @@
 <div class="container">
     <header>
         <h1>ድመማህ / DRCS / GMDN</h1>
-        <p>የዲጂታል መብቶችና የማህበረሰብ ደህንነት ጥረት - የጥሰት ሪፖርት ማቅረቢያ መድረክ</p>
+        <p>የዲጂታል መብቶችና የማህበረሰብ ደህንነት ጥረት - Digital Rights Platform</p>
     </header>
 
-    <div class="form-card">
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('report')">🚨 የጥሰት ሪፖርት ማቅረቢያ</button>
+        <button class="tab-btn" onclick="switchTab('volunteer')">🤝 በበጎ ፈቃደኝነት ይሳተፉ</button>
+    </div>
+
+    <!-- TAB 1: REPORT FORM -->
+    <div id="reportCard" class="form-card active">
         <h2>የጥሰት ሪፖርት ያስገቡ (Anonymous Violation Report)</h2>
         <form id="reportForm">
             <div class="form-group">
-                <label for="violation_type">የጥሰቱ ዓይነት (Violation Type)</label>
+                <label>የጥሰቱ ዓይነት (Violation Type)</label>
                 <select id="violation_type" required>
                     <option value="">ምረጥ/ይምረጡ</option>
                     <option value="Hate Speech">የጥላቻ ንግግር (Hate Speech)</option>
@@ -97,9 +137,8 @@
                     <option value="Fake News">ሃሰተኛ መረጃ/ዲሲንፎርሜሽን (Disinformation)</option>
                 </select>
             </div>
-
             <div class="form-group">
-                <label for="platform">ማህበራዊ ሚዲያ (Platform)</label>
+                <label>ማህበራዊ ሚዲያ (Platform)</label>
                 <select id="platform" required>
                     <option value="">ምረጥ/ይምረጡ</option>
                     <option value="Facebook">Facebook</option>
@@ -110,31 +149,75 @@
                     <option value="Other">ሌላ (Other)</option>
                 </select>
             </div>
-
             <div class="form-group">
-                <label for="target_url">የጥሰቱ ሊንክ (Target Post/Account URL)</label>
-                <input type="url" id="target_url" placeholder="https://facebook.com/..." required>
+                <label>የጥሰቱ ሊንክ (Target Post/Account URL)</label>
+                <input type="url" id="target_url" placeholder="https://..." required>
+            </div>
+            <div class="form-group">
+                <label>የጥሰቱ ዝርዝር መግለጫ (Description)</label>
+                <textarea id="description" rows="3" placeholder="የደረሰውን ጥሰት ዝርዝር ይፃፉ..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label>የስክሪንሾት/የማስረጃ ሊንክ (Evidence URL - Optional)</label>
+                <input type="url" id="evidence_url" placeholder="https://...">
+            </div>
+            <div class="form-group">
+                <label>የስልክ ቁጥር/ኢሜይል (Contact - Optional/ምስጢራዊ ነው)</label>
+                <input type="text" id="reporter_contact">
             </div>
 
-            <div class="form-group">
-                <label for="description">የጥሰቱ ዝርዝር መግለጫ (Description)</label>
-                <textarea id="description" rows="4" placeholder="የደረሰውን ጥሰት ወይም የጥላቻ ንግግሩን ዝርዝር ይፃፉ..." required></textarea>
+            <!-- CAPTCHA -->
+            <div class="captcha-box">
+                <label id="captchaQuestion">የደህንነት ማረጋገጫ፡ 5 + 3 = ?</label>
+                <input type="number" id="captchaAnswer" placeholder="መልሱን እዚህ ይፃፉ" required>
             </div>
 
-            <div class="form-group">
-                <label for="evidence_url">የስክሪንሾት/የማስረጃ ሊንክ (Evidence URL - Optional)</label>
-                <input type="url" id="evidence_url" placeholder="https://imgur.com/... ወይም Drive Link">
-            </div>
-
-            <div class="form-group">
-                <label for="reporter_contact">የስልክ ቁጥር/ኢሜይል (Contact - Optional/ለክትትል ብቻ)</label>
-                <input type="text" id="reporter_contact" placeholder="ምስጢራዊነቱ የተጠበቀ ነው">
-            </div>
-
-            <button type="submit" id="submitBtn">ሪፖርቱን ላክ (Submit Report)</button>
+            <button type="submit" id="submitReportBtn">ሪፖርቱን ላክ (Submit Report)</button>
         </form>
-        <div id="status-msg"></div>
+        <div id="reportStatus" class="status-msg"></div>
     </div>
+
+    <!-- TAB 2: VOLUNTEER FORM -->
+    <div id="volunteerCard" class="form-card">
+        <h2>የበጎ ፈቃደኛ/የመረጃ ማጣሪያ አባልነት ማመልከቻ</h2>
+        <p style="font-size: 14px; color: #cbd5e1;">በየትኛውም የዓለም ክፍል የሚገኙ ቀና አሳቢ ዜጎች በበጎ ፈቃደኝነት በመመዝገብ መረጃዎችን የማጣራትና የመከታተል ስራ ላይ እንዲሳተፉ እንጋብዛለን።</p>
+        <form id="volunteerForm">
+            <div class="form-group">
+                <label>ሙሉ ስም / ቅጽል ስም (Full Name or Alias)</label>
+                <input type="text" id="vol_name" required>
+            </div>
+            <div class="form-group">
+                <label>የመገናኛ አድራሻ (Email / Telegram Username)</label>
+                <input type="text" id="vol_contact" placeholder="example@email.com ወይም @username" required>
+            </div>
+            <div class="form-group">
+                <label>የሚኖሩበት ሀገር/ከተማ (Location)</label>
+                <input type="text" id="vol_location" required>
+            </div>
+            <div class="form-group">
+                <label>የሙያ ዘርፍ / ተሞክሮ (Professional Background)</label>
+                <select id="vol_background" required>
+                    <option value="">ምረጥ/ይምረጡ</option>
+                    <option value="IT/Cybersecurity">IT / የሳይበር ደህንነት</option>
+                    <option value="Journalism/Media">ጋዜጠኝነት / ሚዲያ</option>
+                    <option value="Law/Human Rights">ህግ / ሰብአዊ መብቶች</option>
+                    <option value="Social Media Active User">ንቁ የማህበራዊ ሚዲያ ተከታታይ</option>
+                    <option value="Other">ሌላ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>ለምን መሳተፍ እንደፈለጉ አጭር መግለጫ (Statement of Interest)</label>
+                <textarea id="vol_statement" rows="3" placeholder="ስለ ተነሳሽነትዎ ባጭሩ ይግለጹ..." required></textarea>
+            </div>
+            <button type="submit" id="submitVolBtn">ማመልከቻውን አስገባ (Submit Application)</button>
+        </form>
+        <div id="volStatus" class="status-msg"></div>
+    </div>
+
+    <footer>
+        <p><strong>ምስጢራዊነት እና የመረጃ ጥበቃ (Data Privacy & Anonymity)</strong><br>
+        የድመማህ (DRCS) መድረክ የሪፖርት አድራጊዎችንና የተሳታፊዎችን ምስጢራዊነት ሙሉ በሙሉ ይጠብቃል። መረጃዎች ለሶስተኛ ወገን አሳልፈው አይሰጡም።</p>
+    </footer>
 </div>
 
 <script>
@@ -142,14 +225,40 @@
     const SUPABASE_KEY = 'sb_publishable_eexeY_6oyTH4Rx3VQNUv2w_sqEuFZD8';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const form = document.getElementById('reportForm');
-    const statusMsg = document.getElementById('status-msg');
-    const submitBtn = document.getElementById('submitBtn');
+    // Simple CAPTCHA logic
+    let num1 = Math.floor(Math.random() * 9) + 1;
+    let num2 = Math.floor(Math.random() * 9) + 1;
+    let captchaCorrect = num1 + num2;
+    document.getElementById('captchaQuestion').innerText = `የደህንነት ማረጋገጫ፡ ${num1} + ${num2} = ?`;
 
-    form.addEventListener('submit', async (e) => {
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.form-card').forEach(card => card.classList.remove('active'));
+        if(tab === 'report') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('reportCard').classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('volunteerCard').classList.add('active');
+        }
+    }
+
+    // Submit Report
+    document.getElementById('reportForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        submitBtn.disabled = true;
-        submitBtn.innerText = 'እየተላከ ነው...';
+        const userCaptcha = parseInt(document.getElementById('captchaAnswer').value);
+        const status = document.getElementById('reportStatus');
+        if (userCaptcha !== captchaCorrect) {
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+            status.style.color = '#f87171';
+            status.innerText = 'የደህንነት ጥያቄው መልስ የተሳሳተ ነው! እባክዎ ደግመው ይሞክሩ።';
+            return;
+        }
+
+        const btn = document.getElementById('submitReportBtn');
+        btn.disabled = true;
+        btn.innerText = 'እየተላከ ነው...';
 
         const payload = {
             violation_type: document.getElementById('violation_type').value,
@@ -161,29 +270,58 @@
         };
 
         try {
-            const { data, error } = await _supabase
-                .from('reports')
-                .insert([payload]);
-
+            const { error } = await _supabase.from('reports').insert([payload]);
             if (error) throw error;
-
-            statusMsg.style.display = 'block';
-            statusMsg.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
-            statusMsg.style.color = '#4ade80';
-            statusMsg.innerText = 'ሪፖርትዎ በስኬት ደርሶናል! ስለ ትብብርዎ እናመሰግናለን።';
-            form.reset();
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+            status.style.color = '#4ade80';
+            status.innerText = 'ሪፖርትዎ በስኬት ደርሶናል! ስለ ትብብርዎ እናመሰግናለን።';
+            document.getElementById('reportForm').reset();
         } catch (err) {
-            console.error(err);
-            statusMsg.style.display = 'block';
-            statusMsg.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
-            statusMsg.style.color = '#f87171';
-            statusMsg.innerText = 'ሪፖርቱን መላክ አልተቻለም። እባክዎ ደግመው ይሞክሩ።';
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+            status.style.color = '#f87171';
+            status.innerText = 'ሪፖርቱን መላክ አልተቻለም።';
         } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerText = 'ሪፖርቱን ላክ (Submit Report)';
+            btn.disabled = false;
+            btn.innerText = 'ሪፖርቱን ላክ (Submit Report)';
+        }
+    });
+
+    // Submit Volunteer
+    document.getElementById('volunteerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitVolBtn');
+        const status = document.getElementById('volStatus');
+        btn.disabled = true;
+        btn.innerText = 'እየተላከ ነው...';
+
+        const payload = {
+            full_name: document.getElementById('vol_name').value,
+            contact_info: document.getElementById('vol_contact').value,
+            location: document.getElementById('vol_location').value,
+            background: document.getElementById('vol_background').value,
+            statement: document.getElementById('vol_statement').value
+        };
+
+        try {
+            const { error } = await _supabase.from('volunteers').insert([payload]);
+            if (error) throw error;
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+            status.style.color = '#4ade80';
+            status.innerText = 'ማመልከቻዎ ደርሶናል! ገምግመን በቅርቡ እናገኝዎታለን።';
+            document.getElementById('volunteerForm').reset();
+        } catch (err) {
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+            status.style.color = '#f87171';
+            status.innerText = 'ማመልከቻውን መላክ አልተቻለም። እባክዎ በSupabase ላይ volunteers ሰንጠረዥ መፈጠሩን ያረጋግጡ።';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ማመልከቻውን አስገባ (Submit Application)';
         }
     });
 </script>
-
 </body>
 </html>
