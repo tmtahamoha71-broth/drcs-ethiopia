@@ -8,17 +8,17 @@
     <style>
         :root {
             --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.8);
+            --card-bg: rgba(30, 41, 59, 0.85);
             --accent-color: #38bdf8;
             --text-color: #f8fafc;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.12);
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -26,14 +26,14 @@
         .container { max-width: 800px; width: 100%; }
         header {
             text-align: center;
-            padding: 25px;
+            padding: 20px;
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
+            border-radius: 14px;
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
         }
-        h1 { color: var(--accent-color); margin-bottom: 5px; font-size: 24px; }
+        h1 { color: var(--accent-color); margin-bottom: 5px; font-size: 22px; }
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -42,12 +42,13 @@
         .tab-btn {
             flex: 1;
             padding: 12px;
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(30, 41, 59, 0.6);
             border: 1px solid var(--border-color);
             color: var(--text-color);
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 14px;
         }
         .tab-btn.active {
             background: var(--accent-color);
@@ -56,25 +57,26 @@
         .form-card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: 14px;
             border: 1px solid var(--border-color);
             display: none;
         }
         .form-card.active { display: block; }
         .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 14px; }
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 11px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(15, 23, 42, 0.7);
             color: #fff;
             box-sizing: border-box;
+            font-size: 14px;
         }
         .captcha-box {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 15px;
@@ -98,15 +100,16 @@
             display: none;
             text-align: center;
             font-weight: bold;
+            font-size: 14px;
         }
         footer {
-            margin-top: 30px;
+            margin-top: 25px;
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             color: #94a3b8;
             border-top: 1px solid var(--border-color);
-            padding-top: 20px;
-            line-height: 1.6;
+            padding-top: 15px;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -114,7 +117,7 @@
 
 <div class="container">
     <header>
-        <h1>ድመማህ / DRCS / GMDN</h1>
+        <h1>ድመማህ / DRCS</h1>
         <p>የዲጂታል መብቶችና የማህበረሰብ ደህንነት ጥረት - Digital Rights Platform</p>
     </header>
 
@@ -125,7 +128,7 @@
 
     <!-- TAB 1: REPORT FORM -->
     <div id="reportCard" class="form-card active">
-        <h2>የጥሰት ሪፖርት ያስገቡ (Anonymous Violation Report)</h2>
+        <h2>የጥሰት ሪፖርት ያስገቡ (Anonymous Report)</h2>
         <form id="reportForm">
             <div class="form-group">
                 <label>የጥሰቱ ዓይነት (Violation Type)</label>
@@ -150,7 +153,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>የጥሰቱ ሊንክ (Target Post/Account URL)</label>
+                <label>የጥሰቱ ሊንክ (Target URL)</label>
                 <input type="url" id="target_url" placeholder="https://..." required>
             </div>
             <div class="form-group">
@@ -166,7 +169,6 @@
                 <input type="text" id="reporter_contact">
             </div>
 
-            <!-- CAPTCHA -->
             <div class="captcha-box">
                 <label id="captchaQuestion">የደህንነት ማረጋገጫ፡ 5 + 3 = ?</label>
                 <input type="number" id="captchaAnswer" placeholder="መልሱን እዚህ ይፃፉ" required>
@@ -179,15 +181,15 @@
 
     <!-- TAB 2: VOLUNTEER FORM -->
     <div id="volunteerCard" class="form-card">
-        <h2>የበጎ ፈቃደኛ/የመረጃ ማጣሪያ አባልነት ማመልከቻ</h2>
-        <p style="font-size: 14px; color: #cbd5e1;">በየትኛውም የዓለም ክፍል የሚገኙ ቀና አሳቢ ዜጎች በበጎ ፈቃደኝነት በመመዝገብ መረጃዎችን የማጣራትና የመከታተል ስራ ላይ እንዲሳተፉ እንጋብዛለን።</p>
+        <h2>የበጎ ፈቃደኛ ማመልከቻ (Volunteer Portal)</h2>
+        <p style="font-size: 13px; color: #cbd5e1;">በየትኛውም ዓለም የሚገኙ ቀና አሳቢ ዜጎች በመመዝገብ መረጃዎችን የማጣራት ስራ ላይ እንዲሳተፉ እንጋብዛለን።</p>
         <form id="volunteerForm">
             <div class="form-group">
                 <label>ሙሉ ስም / ቅጽል ስም (Full Name or Alias)</label>
                 <input type="text" id="vol_name" required>
             </div>
             <div class="form-group">
-                <label>የመገናኛ አድራሻ (Email / Telegram Username)</label>
+                <label>የመገናኛ አድራሻ (Email / Telegram)</label>
                 <input type="text" id="vol_contact" placeholder="example@email.com ወይም @username" required>
             </div>
             <div class="form-group">
@@ -195,7 +197,7 @@
                 <input type="text" id="vol_location" required>
             </div>
             <div class="form-group">
-                <label>የሙያ ዘርፍ / ተሞክሮ (Professional Background)</label>
+                <label>የሙያ ዘርፍ / ተሞክሮ (Background)</label>
                 <select id="vol_background" required>
                     <option value="">ምረጥ/ይምረጡ</option>
                     <option value="IT/Cybersecurity">IT / የሳይበር ደህንነት</option>
@@ -206,7 +208,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label>ለምን መሳተፍ እንደፈለጉ አጭር መግለጫ (Statement of Interest)</label>
+                <label>ለምን መሳተፍ እንደፈለጉ አጭር መግለጫ (Interest Statement)</label>
                 <textarea id="vol_statement" rows="3" placeholder="ስለ ተነሳሽነትዎ ባጭሩ ይግለጹ..." required></textarea>
             </div>
             <button type="submit" id="submitVolBtn">ማመልከቻውን አስገባ (Submit Application)</button>
@@ -216,7 +218,7 @@
 
     <footer>
         <p><strong>ምስጢራዊነት እና የመረጃ ጥበቃ (Data Privacy & Anonymity)</strong><br>
-        የድመማህ (DRCS) መድረክ የሪፖርት አድራጊዎችንና የተሳታፊዎችን ምስጢራዊነት ሙሉ በሙሉ ይጠብቃል። መረጃዎች ለሶስተኛ ወገን አሳልፈው አይሰጡም።</p>
+        የድመማህ (DRCS) መድረክ የሪፖርት አድራጊዎችንና የተሳታፊዎችን ምስጢራዊነት ሙሉ በሙሉ ይጠብቃል። የመረጃ ጥበቃ ደንባችን የተጠበቀ ነው።</p>
     </footer>
 </div>
 
@@ -225,7 +227,6 @@
     const SUPABASE_KEY = 'sb_publishable_eexeY_6oyTH4Rx3VQNUv2w_sqEuFZD8';
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Simple CAPTCHA logic
     let num1 = Math.floor(Math.random() * 9) + 1;
     let num2 = Math.floor(Math.random() * 9) + 1;
     let captchaCorrect = num1 + num2;
@@ -243,7 +244,7 @@
         }
     }
 
-    // Submit Report
+    // Report Submit
     document.getElementById('reportForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const userCaptcha = parseInt(document.getElementById('captchaAnswer').value);
@@ -288,7 +289,7 @@
         }
     });
 
-    // Submit Volunteer
+    // Volunteer Submit
     document.getElementById('volunteerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const btn = document.getElementById('submitVolBtn');
@@ -316,7 +317,7 @@
             status.style.display = 'block';
             status.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
             status.style.color = '#f87171';
-            status.innerText = 'ማመልከቻውን መላክ አልተቻለም። እባክዎ በSupabase ላይ volunteers ሰንጠረዥ መፈጠሩን ያረጋግጡ።';
+            status.innerText = 'ማመልከቻውን መላክ አልተቻለም።';
         } finally {
             btn.disabled = false;
             btn.innerText = 'ማመልከቻውን አስገባ (Submit Application)';
