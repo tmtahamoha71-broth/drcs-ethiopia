@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Rights and Community Safety Coalition (DRCS)</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --accent-color: #38bdf8;
+            --text-color: #f8fafc;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        header {
+            text-align: center;
+            padding: 30px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        h1 { color: var(--accent-color); margin-bottom: 10px; }
+        .form-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: rgba(15, 23, 42, 0.6);
+            color: #fff;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { opacity: 0.9; }
+        #status-msg {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ድመማህ / DRCS / GMDN</h1>
+        <p>የዲጂታል መብቶችና የማህበረሰብ ደህንነት ጥረት - የጥሰት ሪፖርት ማቅረቢያ መድረክ</p>
+    </header>
+
+    <div class="form-card">
+        <h2>የጥሰት ሪፖርት ያስገቡ (Anonymous Violation Report)</h2>
+        <form id="reportForm">
+            <div class="form-group">
+                <label for="violation_type">የጥሰቱ ዓይነት (Violation Type)</label>
+                <select id="violation_type" required>
+                    <option value="">ምረጥ/ይምረጡ</option>
+                    <option value="Hate Speech">የጥላቻ ንግግር (Hate Speech)</option>
+                    <option value="Mob Harassment">የቡድን ትንኮሳና ስም ማጥፋት (Mob Harassment)</option>
+                    <option value="Incitement">ለግጭት ማነሳሳት (Incitement to Violence)</option>
+                    <option value="Fake News">ሃሰተኛ መረጃ/ዲሲንፎርሜሽን (Disinformation)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="platform">ማህበራዊ ሚዲያ (Platform)</label>
+                <select id="platform" required>
+                    <option value="">ምረጥ/ይምረጡ</option>
+                    <option value="Facebook">Facebook</option>
+                    <option value="TikTok">TikTok</option>
+                    <option value="Telegram">Telegram</option>
+                    <option value="X/Twitter">X (Twitter)</option>
+                    <option value="YouTube">YouTube</option>
+                    <option value="Other">ሌላ (Other)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="target_url">የጥሰቱ ሊንክ (Target Post/Account URL)</label>
+                <input type="url" id="target_url" placeholder="https://facebook.com/..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">የጥሰቱ ዝርዝር መግለጫ (Description)</label>
+                <textarea id="description" rows="4" placeholder="የደረሰውን ጥሰት ወይም የጥላቻ ንግግሩን ዝርዝር ይፃፉ..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="evidence_url">የስክሪንሾት/የማስረጃ ሊንክ (Evidence URL - Optional)</label>
+                <input type="url" id="evidence_url" placeholder="https://imgur.com/... ወይም Drive Link">
+            </div>
+
+            <div class="form-group">
+                <label for="reporter_contact">የስልክ ቁጥር/ኢሜይል (Contact - Optional/ለክትት
