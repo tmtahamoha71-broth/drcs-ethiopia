@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+    <!DOCTYPE html>
 <html lang="am">
 <head>
     <meta charset="UTF-8">
@@ -26,14 +27,41 @@
         .container { max-width: 750px; width: 100%; }
         header {
             text-align: center;
-            padding: 25px;
+            padding: 25px 20px;
             background: var(--card-bg);
             backdrop-filter: blur(10px);
-            border-radius: 14px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
             margin-bottom: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
-        h1 { color: var(--accent-color); margin-bottom: 5px; font-size: 24px; }
+        
+        /* LOGO STYLING */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .logo-badge {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .logo-badge svg {
+            width: 38px;
+            height: 38px;
+            fill: #ffffff;
+        }
+
+        h1 { color: var(--accent-color); margin: 5px 0; font-size: 24px; letter-spacing: 0.5px; }
+        .tagline { color: #94a3b8; font-size: 14px; margin-top: 2px; }
         
         .info-card {
             background: rgba(56, 189, 248, 0.05);
@@ -82,6 +110,11 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        button[type="submit"]:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
         }
         .status-msg {
             margin-top: 15px;
@@ -93,24 +126,44 @@
             font-size: 14px;
         }
 
+        /* SUPPORT & ACTION BUTTONS STYLING */
         .support-card {
             background: var(--card-bg);
-            padding: 20px;
+            padding: 22px;
             border-radius: 14px;
             border: 1px solid var(--border-color);
             text-align: center;
             line-height: 1.6;
         }
-        .contact-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background: #22c55e;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 15px;
         }
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            color: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            flex: 1;
+            min-width: 180px;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .btn-telegram { background-color: #0088cc; }
+        .btn-email { background-color: #ea4335; }
+        .btn-channel { background-color: #8b5cf6; }
 
         footer {
             margin-top: 25px;
@@ -127,8 +180,16 @@
 
 <div class="container">
     <header>
+        <!-- DRCS DIGITAL SHIELD LOGO -->
+        <div class="logo-container">
+            <div class="logo-badge">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,7A3,3 0 0,1 15,10A3,3 0 0,1 12,13A3,3 0 0,1 9,10A3,3 0 0,1 12,7M12,15C13.67,15 17,15.83 17,17.5V18H7V17.5C7,15.83 10.33,15 12,15Z" />
+                </svg>
+            </div>
+        </div>
         <h1>ድመማህ / DRCS</h1>
-        <p>የዲጂታል መብቶችና የማህበረሰብ ደህንነት ጥረት - Digital Rights Platform</p>
+        <p class="tagline">የዲጂታል መብቶችና የማህበረሰብ ደህንነት ጥረት - Digital Rights Platform</p>
     </header>
 
     <!-- 1. ጥሪ ለቀና ኢትዮጵያውያን -->
@@ -190,13 +251,25 @@
         <div id="reportStatus" class="status-msg"></div>
     </div>
 
-    <!-- 3. ድርጅቱን የማበረታቻ እና የመረጃ ክፍል -->
+    <!-- 3. ድርጅቱን የማበረታቻ እና የኢንተራክቲቭ ሊንኮች ክፍል -->
     <div class="support-card">
         <h3>💡 ድርጅቱን ለማበረታታት እና አብሮ ለመስራት</h3>
-        <p>የድመማህ (DRCS) ጥረትን በባለሙያነት፣ በቴክኖሎጂ፣ በሀሳብ ወይም በሌሎች መንገዶች ማበረታታት እና መደገፍ ይፈልጋሉ? ወይም ስለ መድረኩ ተጨማሪ መረጃ ይፈልጋሉ?</p>
-        <p><strong>በቀጥታ ያግኙን፦</strong></p>
-        <p>📧 ኢሜይል፦ <code>contact@drcs-ethiopia.org</code><br>
-        💬 ቴሌግራም፦ <code>@DRCS_Ethiopia_Bot</code></p>
+        <p>የድመማህ (DRCS) ጥረትን በባለሙያነት፣ በቴክኖሎጂ፣ በሀሳብ ወይም በሌሎች መንገዶች ማበረታታት እና መደገፍ ይፈልጋሉ? ከታች ያሉትን ቁልፎች በመጫን በቀጥታ ያግኙን፦</p>
+        
+        <div class="action-buttons">
+            <!-- ቴሌግራም ቦት/አድራሻ ሊንክ -->
+            <a href="https://t.me/DRCS_Ethiopia_Bot" target="_blank" class="action-btn btn-telegram">
+                💬 በቴሌግራም ያግኙን
+            </a>
+            <!-- ኢሜይል መላኪያ ሊንክ -->
+            <a href="mailto:contact@drcs-ethiopia.org" class="action-btn btn-email">
+                📧 በኢሜይል ይፃፉልን
+            </a>
+            <!-- የቴሌግራም ቻናል ሊንክ -->
+            <a href="https://t.me/DRCS_Ethiopia" target="_blank" class="action-btn btn-channel">
+                📢 ቻናላችንን ይቀላቀሉ
+            </a>
+        </div>
     </div>
 
     <footer>
@@ -219,3 +292,47 @@
         e.preventDefault();
         const userCaptcha = parseInt(document.getElementById('captchaAnswer').value);
         const status = document.getElementById('reportStatus');
+        
+        if (userCaptcha !== captchaCorrect) {
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+            status.style.color = '#f87171';
+            status.innerText = 'የደህንነት ጥያቄው መልስ የተሳሳተ ነው! እባክዎ ደግመው ይሞክሩ።';
+            return;
+        }
+
+        const btn = document.getElementById('submitReportBtn');
+        btn.disabled = true;
+        btn.innerText = 'እየተላከ ነው...';
+
+        const payload = {
+            violation_type: document.getElementById('violation_type').value,
+            platform: document.getElementById('platform').value,
+            target_url: document.getElementById('target_url').value,
+            description: document.getElementById('description').value,
+            evidence_url: document.getElementById('evidence_url').value || null,
+            reporter_contact: document.getElementById('reporter_contact').value || null
+        };
+
+        try {
+            const { error } = await _supabase.from('reports').insert([payload]);
+            if (error) throw error;
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+            status.style.color = '#4ade80';
+            status.innerText = 'ሪፖርትዎ በስኬት ደርሶናል! ስለ ትብብርዎ እናመሰግናለን።';
+            document.getElementById('reportForm').reset();
+        } catch (err) {
+            status.style.display = 'block';
+            status.style.backgroundColor = 'rgba(239, 68, 68, 0.2)';
+            status.style.color = '#f87171';
+            status.innerText = 'ሪፖርቱን መላክ አልተቻለም።';
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'ሪፖርቱን ላክ (Submit Report)';
+        }
+    });
+</script>
+</body>
+</html>        
+            
